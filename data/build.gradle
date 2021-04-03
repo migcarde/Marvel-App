@@ -1,0 +1,91 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-parcelize'
+apply plugin: "kotlin-kapt"
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testMockDebugUnitTest']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    final def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*']
+    final def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/mockDebug", excludes: fileFilter)
+    final def mainSrc = "$project.projectDir/src/main/kotlin"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData(fileTree(dir: project.buildDir, includes: ['jacoco/testMockDebugUnitTest.exec']))
+}
+
+
+buildscript {
+    ext.kotlin_version = '1.4.20'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled false
+        }
+    }
+
+
+    flavorDimensions "enviroment"
+
+    testOptions {
+        execution "ANDROID_TEST_ORCHESTRATOR"
+        animationsDisabled true
+
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation project(":commons")
+    implementation project(":domain")
+    implementation project(":commons-android")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation libs.koin
+    implementation libs.kotlin
+    implementation libs.kotlinCoroutinesAndroid
+    implementation libs.kotlinReflect
+    implementation libs.retrofit
+    implementation libs.retrofitMoshi
+    implementation libs.retrofitKotlinCoroutinesAdapter
+    implementation libs.interceptor
+    implementation libs.connection
+    implementation libs.androidxArchCoreTesting
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation libs.kotlinCoroutinesTest
+
+    testImplementation libs.jUnit
+    testImplementation libs.mockito
+    testImplementation libs.mockitoInline
+}

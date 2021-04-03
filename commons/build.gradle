@@ -1,0 +1,24 @@
+apply plugin: 'kotlin'
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+jacocoTestReport.dependsOn test
+
+
+dependencies {
+    implementation libs.koin
+    implementation libs.kotlin
+    implementation libs.kotlinCoroutinesAndroid
+    implementation libs.kotlinReflect
+    implementation libs.mockito
+    implementation libs.mockitoInline
+    implementation libs.moshiKotlin
+
+    testImplementation libs.jUnit
+    testImplementation libs.kotlinCoroutinesTest
+
+}

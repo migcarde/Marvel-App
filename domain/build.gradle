@@ -1,0 +1,25 @@
+apply plugin: "kotlin"
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+jacocoTestReport.dependsOn test
+
+dependencies {
+    implementation project(":commons")
+
+    implementation libs.koin
+    implementation libs.kotlin
+    implementation libs.kotlinCoroutinesAndroid
+    implementation libs.kotlinReflect
+    implementation libs.androidxArchCoreTesting
+    implementation libs.kotlinCoroutinesTest
+
+    testImplementation libs.jUnit
+    testImplementation libs.kotlinCoroutinesTest
+    testImplementation libs.mockito
+    testImplementation libs.mockitoInline
+}

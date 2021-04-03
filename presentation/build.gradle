@@ -1,0 +1,133 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
+
+task jacocoTestReport(type: JacocoReport, dependsOn:['testMockDebugUnitTest']) {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    final def fileFilter = ["**/R.class", "**R&*.class", "**/BuildConfig.*", "**/Manifest*.*", "**/*Test*.*"]
+    final def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/mockDebug", excludes: fileFilter)
+    final def mainSrc = "$project.projectDir/src/main/kotlin"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData(fileTree(dir: project.buildDir, includes: ["jacoco/testMockDebugUnitTest.exec"]))
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion "29.0.3"
+
+    def versionMajor = 11
+    def versionMinor = 11
+    def versionPatch = 7
+    def versionBuild = 1
+
+    defaultConfig {
+        applicationId "com.example.marvelcharacters"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion 30
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "PACKAGE_NAME", "\"com.example.marvelcharacters\"")
+    }
+
+    buildTypes {
+
+        debug {
+            debuggable true
+            testCoverageEnabled false
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        dev {
+            applicationId "com.example.marvelcharacters.dev"
+            buildConfigField "String", "BASE_URL", "\"${base_url}\""
+            resValue "string", "app_name", "Thrones"
+
+        }
+    }
+    flavorDimensions "enviroment"
+
+    testOptions {
+        execution "ANDROID_TEST_ORCHESTRATOR"
+        animationsDisabled true
+
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation project(':commons')
+    implementation project(':commons-android')
+    implementation project(':data')
+    implementation project(':domain')
+
+    implementation libs.androidMotionLayout
+    implementation libs.androidxAppCompat
+    implementation libs.androidxConstraintLayout
+    implementation libs.androidxCoreKtx
+    implementation libs.androidxMultidex
+    implementation libs.androidxNavigationFragmentKtx
+    implementation libs.androidxNavigationUiKtx
+    implementation libs.googleAndroidMaterial
+    implementation libs.koinViewModel
+    implementation libs.kotlin
+    implementation libs.kotlinCoroutinesAndroid
+    implementation libs.kotlinReflect
+    implementation libs.retrofit
+    implementation libs.retrofitMoshi
+    implementation libs.androidxLegacySupport
+    implementation libs.coil
+
+    implementation libs.jUnit
+    implementation libs.kotlinCoroutinesTest
+    implementation libs.mockito
+    implementation libs.mockitoInline
+    implementation libs.androidxArchCoreTesting
+    implementation 'androidx.preference:preference:1.1.1'
+    testImplementation libs.androidxArchCoreTesting
+    testImplementation libs.androidxTestRunner
+
+    implementation libs.flexbox
+}

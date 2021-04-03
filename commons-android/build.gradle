@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled false
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        execution "ANDROID_TEST_ORCHESTRATOR"
+        animationsDisabled true
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(":commons")
+
+
+    implementation libs.androidxAppCompat
+    implementation libs.androidxConstraintLayout
+    implementation libs.androidxNavigationFragmentKtx
+    implementation libs.androidxNavigationUiKtx
+    implementation libs.androidxCoreKtx
+    implementation libs.koin
+    implementation libs.kotlin
+    implementation libs.kotlinReflect
+    implementation libs.retrofit
+    implementation libs.mockito
+    implementation libs.mockitoInline
+    implementation libs.coil
+
+
+    testImplementation libs.jUnit
+    testImplementation libs.kotlinCoroutinesTest
+}

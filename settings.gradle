@@ -1,0 +1,6 @@
+include ':domain'
+include ':data'
+include ':commons-android'
+include ':commons'
+include ':presentation'
+rootProject.name = "Marvel Characters"
