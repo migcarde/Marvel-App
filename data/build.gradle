@@ -43,6 +43,12 @@ android {
         }
     }
 
+    productFlavors {
+        dev {
+            buildConfigField "String", "PUBLIC_KEY", public_key
+            buildConfigField "String", "PRIVATE_KEY", private_key
+        }
+    }
 
     flavorDimensions "enviroment"
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/smallDimen"
+    android:layout_marginTop="@dimen/smallDimen"
+    android:background="@drawable/shape_card"
+    android:backgroundTint="@color/card_background"
+    android:padding="@dimen/smallDimen">
+
+    <ImageView
+        android:id="@+id/ivPicture"
+        android:layout_width="@dimen/hero_picture_dimen"
+        android:layout_height="@dimen/hero_picture_dimen"
+        android:contentDescription="@string/character_picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/smallDimen"
+        android:theme="@style/TextView.Bold.14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivPicture"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvComicsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tinyDimen"
+        android:text="@string/comics"
+        android:theme="@style/TextView.Bold.14"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+    <TextView
+        android:id="@+id/tvNumberOfComics"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/smallDimen"
+        android:layout_marginTop="@dimen/tinyDimen"
+        app:layout_constraintEnd_toEndOf="@id/tvName"
+        app:layout_constraintStart_toEndOf="@id/tvComicsLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+    <TextView
+        android:id="@+id/tvSeriesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tinyDimen"
+        android:text="@string/series"
+        android:theme="@style/TextView.Bold.14"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvNumberOfComics" />
+
+    <TextView
+        android:id="@+id/tvNumberOfSeries"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/smallDimen"
+        android:layout_marginTop="@dimen/tinyDimen"
+        app:layout_constraintEnd_toEndOf="@id/tvName"
+        app:layout_constraintStart_toEndOf="@id/tvSeriesLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvNumberOfComics" />
+
+    <TextView
+        android:id="@+id/tvStoriesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tinyDimen"
+        android:text="@string/stories"
+        android:theme="@style/TextView.Bold.14"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvSeriesLabel" />
+
+    <TextView
+        android:id="@+id/tvNumberOfStories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/smallDimen"
+        android:layout_marginTop="@dimen/tinyDimen"
+        app:layout_constraintEnd_toEndOf="@id/tvName"
+        app:layout_constraintStart_toEndOf="@id/tvStoriesLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvNumberOfSeries" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

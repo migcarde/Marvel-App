@@ -6,7 +6,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseUseCase<F, S, P> : CoroutineScope {
 
-    abstract suspend fun run(paramas: P): Either<F, S>
+    abstract suspend fun run(params: P): Either<F, S>
 
     override val coroutineContext: CoroutineContext
         get() = Job()

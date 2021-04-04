@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tinyDimen">4dp</dimen>
+    <dimen name="smallDimen">10dp</dimen>
+    <dimen name="mediumDimen">20dp</dimen>
+
+    <dimen name="hero_picture_dimen">100dp</dimen>
+</resources>
