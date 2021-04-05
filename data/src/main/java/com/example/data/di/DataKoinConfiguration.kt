@@ -46,7 +46,7 @@ class DataKoinConfiguration(private val baseUrl: String) {
 
     private fun createOkHttpClient(interceptorConnection: InterceptorConnection): OkHttpClient {
         val interceptorLog: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = HttpLoggingInterceptor.Level.BASIC
         }
 
         val cookieManager = CookieManager().apply {

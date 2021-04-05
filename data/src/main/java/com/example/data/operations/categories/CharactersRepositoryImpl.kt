@@ -16,21 +16,15 @@ class CharactersRepositoryImpl(
 ) : CharactersRepository {
     override suspend fun getCharacters(charactersDataInput: CharactersDataInput): Either<CharactersFailure, CharacterListBusiness> {
         return when (systemInformation.hasConnection) {
-            true -> {
-                try {
-                    when (val response =
-                        charactersRemoteDataSource.getCharacters(charactersDataInput.toRequest())) {
-                        is ParsedResponse.Success -> Either.Right(response.success.toDomain())
-                        is ParsedResponse.KnownError -> Either.Left(CharactersFailure.Know(response.knownError))
-                        is ParsedResponse.Failure -> Either.Left(
-                            CharactersFailure.Repository(
-                                response.failure
-                            )
-                        )
-                    }
-                } catch (e: Exception) {
-                    Either.Left(CharactersFailure.Repository(RepositoryFailure.Unknown))
-                }
+            true -> when (val response =
+                charactersRemoteDataSource.getCharacters(charactersDataInput.toRequest())) {
+                is ParsedResponse.Success -> Either.Right(response.success.toDomain())
+                is ParsedResponse.KnownError -> Either.Left(CharactersFailure.Know(response.knownError))
+                is ParsedResponse.Failure -> Either.Left(
+                    CharactersFailure.Repository(
+                        response.failure
+                    )
+                )
             }
             false -> Either.Left(CharactersFailure.Repository(RepositoryFailure.NoInternet))
         }

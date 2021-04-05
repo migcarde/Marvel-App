@@ -164,7 +164,7 @@ class CharactersRepositoryImplTest {
         results = listOf(resultBusiness)
     )
 
-    val input = CharactersDataInput(timestamp = "test")
+    val input = CharactersDataInput(timestamp = "test", offset = 0)
 
     @Test
     fun `Get characters - Success`() = runBlocking {
@@ -187,7 +187,7 @@ class CharactersRepositoryImplTest {
     @Test
     fun `Get characters - Know error`() = runBlocking {
         // Given
-        val response = ParsedResponse.KnownError(CharactersError.CodeWrong("Test"))
+        val response = ParsedResponse.KnownError(CharactersError.CodeWrong(500, "Test"))
         val request = input.toRequest()
 
         `when`(systemInformation.hasConnection).thenReturn(true)
@@ -197,7 +197,7 @@ class CharactersRepositoryImplTest {
         val result = charactersRepositoryImpl.getCharacters(input)
 
         // Then
-        val expectedResult = Either.Left(CharactersFailure.Know(CharactersError.CodeWrong("Test")))
+        val expectedResult = Either.Left(CharactersFailure.Know(CharactersError.CodeWrong(500, "Test")))
 
         Assert.assertEquals(expectedResult, result)
     }

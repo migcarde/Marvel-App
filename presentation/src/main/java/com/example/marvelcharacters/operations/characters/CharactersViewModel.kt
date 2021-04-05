@@ -1,10 +1,7 @@
 package com.example.marvelcharacters.operations.characters
 
 import com.example.domain.RepositoryFailure
-import com.example.domain.operations.characters.CharacterListBusiness
-import com.example.domain.operations.characters.CharactersDataInput
-import com.example.domain.operations.characters.CharactersFailure
-import com.example.domain.operations.characters.GetCharacters
+import com.example.domain.operations.characters.*
 import com.example.marvelcharacters.base.BaseViewModel
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -20,11 +17,10 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
             ?: CharactersViewState.CharactersForUpdate()
     }
 
-    fun getCharacters() {
+    fun getCharacters(timestamp: String) {
         if (state.data == null) {
             viewState.value = state.apply { loading = true }
 
-            val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
             getCharacters(CharactersDataInput(timestamp = timestamp, offset = 0)) {
                 viewState.value = state.apply { loading = false }
                 it.fold(::handleFailure, ::handleSuccess)
@@ -32,16 +28,15 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
         }
     }
 
-    fun updateCharacters() {
+    fun updateCharacters(timestamp: String) {
         stateUpdate.data?.let {
-            updateData(it)
+            updateData(it, timestamp)
         } ?: state.data?.let {
-            updateData(it)
+            updateData(it, timestamp)
         }
     }
 
-    private fun updateData(data: CharacterListViewEntity) {
-        val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+    private fun updateData(data: CharacterListViewEntity, timestamp: String) {
         val input = CharactersDataInput(timestamp = timestamp, offset = data.offset + data.count)
 
         getCharacters(input) {
@@ -52,6 +47,7 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
     private fun handleFailure(failure: CharactersFailure) {
         viewTransition.value = when (failure) {
             is CharactersFailure.Repository -> handleRepositoryFailure(failure.error)
+            is CharactersFailure.Know -> handleKnowFailures(failure.error)
             else -> CharactersViewTransition.OnUnknown
         }
     }
@@ -61,6 +57,11 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
             is RepositoryFailure.NoInternet -> CharactersViewTransition.OnNoInternet
             else -> CharactersViewTransition.OnUnknown
         }
+
+    private fun handleKnowFailures(know: CharactersError) = when (know) {
+        is CharactersError.CodeWrong -> CharactersViewTransition.OnKnow(know.status)
+        else -> CharactersViewTransition.OnUnknown
+    }
 
     private fun handleSuccess(business: CharacterListBusiness) {
         viewState.value = state.apply {

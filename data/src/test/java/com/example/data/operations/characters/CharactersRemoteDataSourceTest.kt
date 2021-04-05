@@ -47,7 +47,8 @@ class CharactersRemoteDataSourceTest {
         val request = CharacterDataRequest(
             timestamp = "test",
             apiKey = "test api key",
-            hash = "test hash"
+            hash = "test hash",
+            offset = 0
         )
         val mockResponse = mock(CharacterResponse::class.java)
         val responseBody = mock(ResponseBody::class.java)
@@ -61,7 +62,8 @@ class CharactersRemoteDataSourceTest {
             charactersService.getCharacters(
                 timestamp = request.timestamp,
                 apiKey = request.apiKey,
-                hash = request.hash
+                hash = request.hash,
+                offset = 0
             )
         ).thenReturn(
             CompletableDeferred(response)
@@ -85,7 +87,8 @@ class CharactersRemoteDataSourceTest {
         val request = CharacterDataRequest(
             timestamp = "test",
             apiKey = "test api key",
-            hash = "test hash"
+            hash = "test hash",
+            offset = 0
         )
         val bookResponse = mock(CharacterResponse::class.java)
         val responseBody = mock(ResponseBody::class.java)
@@ -100,14 +103,14 @@ class CharactersRemoteDataSourceTest {
             charactersService.getCharacters(
                 timestamp = request.timestamp,
                 apiKey = request.apiKey,
-                hash = request.hash
+                hash = request.hash,
+                offset = 0
             )
         ).thenReturn(CompletableDeferred(response))
         `when`(jsonParser.fromJson(json, ErrorResponse::class.java)).thenReturn(
             ErrorResponse(
-                listOf(
-                    State(status = "500", "Server error")
-                )
+                code = 500,
+                status = "Test",
             )
         )
 

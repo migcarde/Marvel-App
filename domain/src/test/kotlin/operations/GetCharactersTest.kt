@@ -15,7 +15,7 @@ class GetCharactersTest {
 
     private val getCharacters = GetCharacters(charactersRepository)
 
-    private val input = CharactersDataInput(timestamp = "test")
+    private val input = CharactersDataInput(timestamp = "test", offset = 0)
 
     @Test
     fun `Get Characters - Success`() = runBlocking {
@@ -34,7 +34,7 @@ class GetCharactersTest {
     @Test
     fun `Get Characters - Know error`() = runBlocking {
         // Given
-        val expectedResult = Either.Left(CharactersFailure.Know(CharactersError.CodeWrong("Test")))
+        val expectedResult = Either.Left(CharactersFailure.Know(CharactersError.CodeWrong(500, "Test")))
 
         `when`(charactersRepository.getCharacters(input)).thenReturn(expectedResult)
 

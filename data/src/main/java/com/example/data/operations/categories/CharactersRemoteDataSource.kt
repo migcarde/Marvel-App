@@ -24,7 +24,7 @@ class CharactersRemoteDataSource(
         return responseParser.parse(response, getKnowErrorClassByErrorCode())
     }
 
-    private fun getKnowErrorClassByErrorCode(): Map<Int, KClass<out CharactersError>> = mapOf(
+    private fun getKnowErrorClassByErrorCode(): Map<String, KClass<out CharactersError>> = mapOf(
         PUBIC_CHARACTER_LIST_ERROR to CharactersError.CodeWrong::class
     )
 }

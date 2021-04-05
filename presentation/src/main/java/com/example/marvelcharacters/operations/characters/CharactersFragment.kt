@@ -9,6 +9,8 @@ import com.example.marvelcharacters.R
 import com.example.marvelcharacters.base.BaseFragment
 import com.example.marvelcharacters.databinding.CharactersFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTransition>() {
     override val viewModel by viewModel<CharactersViewModel>()
@@ -19,7 +21,7 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
         CharactersFragmentBinding.inflate(layoutInflater, container, false)
 
     override fun initViews() {
-        viewModel.getCharacters()
+        viewModel.getCharacters(DateTimeFormatter.ISO_INSTANT.format(Instant.now()))
     }
 
     override fun initListeners() = Unit // TODO: Implement it
@@ -75,7 +77,7 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
                     super.onScrolled(recyclerView, dx, dy)
 
                     if (layout.findLastCompletelyVisibleItemPosition() == charactersAdapter.itemCount - 1) {
-                        viewModel.updateCharacters()
+                        viewModel.updateCharacters(DateTimeFormatter.ISO_INSTANT.format(Instant.now()))
                     }
                 }
             })
@@ -91,6 +93,11 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
 
             is CharactersViewTransition.OnNoInternet -> binding.tvMessage.apply {
                 text = getString(R.string.no_internet_error)
+                visibility = View.VISIBLE
+            }
+
+            is CharactersViewTransition.OnKnow -> binding.tvMessage.apply {
+                text = transition.message
                 visibility = View.VISIBLE
             }
         }
