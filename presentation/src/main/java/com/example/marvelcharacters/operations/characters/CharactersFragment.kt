@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.marvelcharacters.R
 import com.example.marvelcharacters.base.BaseFragment
 import com.example.marvelcharacters.databinding.CharactersFragmentBinding
+import com.example.marvelcharacters.operations.characters.CharactersAdapterViewEntity.Companion.TYPE_LOADING
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -79,7 +80,7 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    if (layout.findLastCompletelyVisibleItemPosition() == charactersAdapter.itemCount - 1) {
+                    if (layout.findLastCompletelyVisibleItemPosition() == charactersAdapter.itemCount - 1 && charactersAdapter.characters.last().type == TYPE_LOADING) {
                         viewModel.updateCharacters(DateTimeFormatter.ISO_INSTANT.format(Instant.now()))
                     }
                 }

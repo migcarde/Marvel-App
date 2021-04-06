@@ -34,7 +34,7 @@ data class CharactersAdapterViewEntity(
 fun CharacterListBusiness.toPresentation(): CharacterListViewEntity {
     val results = this.results.map { it.toPresentation() }.toMutableList()
 
-    if (this.offset <= this.total) {
+    if (this.count == this.limit) {
         results.add(CharactersAdapterViewEntity(type = TYPE_LOADING))
     }
 
