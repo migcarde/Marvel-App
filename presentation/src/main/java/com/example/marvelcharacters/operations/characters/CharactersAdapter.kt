@@ -8,7 +8,10 @@ import com.example.marvelcharacters.databinding.CharactersItemFragmentBinding
 import com.example.marvelcharacters.databinding.LoadingItemBinding
 import com.example.marvelcharacters.operations.characters.CharactersAdapterViewEntity.Companion.TYPE_CONTENT
 
-class CharactersAdapter(val characters: MutableList<CharactersAdapterViewEntity>) :
+class CharactersAdapter(
+    val characters: MutableList<CharactersAdapterViewEntity>,
+    val onClick: (Long) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
@@ -39,9 +42,10 @@ class CharactersAdapter(val characters: MutableList<CharactersAdapterViewEntity>
 
     override fun getItemCount(): Int = characters.size
 
-    class CharactersHolder(private val binding: CharactersItemFragmentBinding) :
+    inner class CharactersHolder(private val binding: CharactersItemFragmentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CharacterViewEntity) = binding.apply {
+            root.setOnClickListener { onClick(item.id) }
             ivPicture.load(item.thumbnail)
             tvName.text = item.name
             tvNumberOfComics.text = item.numberOfComics.toString()

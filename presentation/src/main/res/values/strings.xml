@@ -2,9 +2,9 @@
     <string name="characters">Personajes</string>
     <string name="characters_not_found">No se han encontrado personajes</string>
     <string name="character_picture">Imagen del personaje</string>
-    <string name="series">Series:</string>
-    <string name="comics">Comics:</string>
-    <string name="stories">Historias:</string>
+    <string name="series">Series</string>
+    <string name="comics">Comics</string>
+    <string name="stories">Historias</string>
 
     <string name="no_internet_error">No dispone de conexión a internet</string>
     <string name="unknown_error">Ha ocurrido un error inesperado</string>

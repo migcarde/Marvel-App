@@ -3,7 +3,6 @@ package com.example.data.operations.characters
 import com.example.commons.data.types.Either
 import com.example.commons_android.system.SystemInformation
 import com.example.data.ParsedResponse
-import com.example.data.operations.categories.*
 import com.example.domain.RepositoryFailure
 import com.example.domain.operations.characters.*
 import kotlinx.coroutines.runBlocking
@@ -165,6 +164,7 @@ class CharactersRepositoryImplTest {
     )
 
     val input = CharactersDataInput(timestamp = "test", offset = 0)
+    val inputCharacter = CharacterDataInput(timestamp = "test", id = 1)
 
     @Test
     fun `Get characters - Success`() = runBlocking {
@@ -249,6 +249,96 @@ class CharactersRepositoryImplTest {
 
         // When
         val result = charactersRepositoryImpl.getCharacters(input)
+
+        // Then
+        val expectedResult = Either.Left(CharactersFailure.Repository(RepositoryFailure.ServerError))
+
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `Get character - Success`() = runBlocking {
+        // Given
+        val response = ParsedResponse.Success(charactersResponse)
+        val request = inputCharacter.toRequest()
+
+        `when`(systemInformation.hasConnection).thenReturn(true)
+        `when`(charactersRemoteDataSource.getCharacter(request)).thenReturn(response)
+
+        // When
+        val result = charactersRepositoryImpl.getCharacter(inputCharacter)
+
+        // Then
+        val expectedResult = Either.Right(charactersBusiness)
+
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `Get character - Know error`() = runBlocking {
+        // Given
+        val response = ParsedResponse.KnownError(CharactersError.CodeWrong(500, "Test"))
+        val request = inputCharacter.toRequest()
+
+        `when`(systemInformation.hasConnection).thenReturn(true)
+        `when`(charactersRemoteDataSource.getCharacter(request)).thenReturn(response)
+
+        // When
+        val result = charactersRepositoryImpl.getCharacter(inputCharacter)
+
+        // Then
+        val expectedResult = Either.Left(CharactersFailure.Know(CharactersError.CodeWrong(500, "Test")))
+
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `Get character - Unknown`() = runBlocking {
+        // Given
+        val response = ParsedResponse.Failure(RepositoryFailure.Unknown)
+        val request = inputCharacter.toRequest()
+
+        `when`(systemInformation.hasConnection).thenReturn(true)
+        `when`(charactersRemoteDataSource.getCharacter(request)).thenReturn(response)
+
+        // When
+        val result = charactersRepositoryImpl.getCharacter(inputCharacter)
+
+        // Then
+        val expectedResult = Either.Left(CharactersFailure.Repository(RepositoryFailure.Unknown))
+
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `Get character - Unauthorized`() = runBlocking {
+        // Given
+        val response = ParsedResponse.Failure(RepositoryFailure.Unauthorized)
+        val request = inputCharacter.toRequest()
+
+        `when`(systemInformation.hasConnection).thenReturn(true)
+        `when`(charactersRemoteDataSource.getCharacter(request)).thenReturn(response)
+
+        // When
+        val result = charactersRepositoryImpl.getCharacter(inputCharacter)
+
+        // Then
+        val expectedResult = Either.Left(CharactersFailure.Repository(RepositoryFailure.Unauthorized))
+
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `Get character - Server error`() = runBlocking {
+        // Given
+        val response = ParsedResponse.Failure(RepositoryFailure.ServerError)
+        val request = inputCharacter.toRequest()
+
+        `when`(systemInformation.hasConnection).thenReturn(true)
+        `when`(charactersRemoteDataSource.getCharacter(request)).thenReturn(response)
+
+        // When
+        val result = charactersRepositoryImpl.getCharacter(inputCharacter)
 
         // Then
         val expectedResult = Either.Left(CharactersFailure.Repository(RepositoryFailure.ServerError))

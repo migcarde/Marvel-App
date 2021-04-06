@@ -36,6 +36,10 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
         }
     }
 
+    fun goToDetail(id: Long) {
+        viewTransition.value = CharactersViewTransition.GoToDetail(id)
+    }
+
     private fun updateData(data: CharacterListViewEntity, timestamp: String) {
         val input = CharactersDataInput(timestamp = timestamp, offset = data.offset + data.count)
 

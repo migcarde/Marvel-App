@@ -2,9 +2,9 @@ package com.example.data.di
 
 import com.example.data.InterceptorConnection
 import com.example.data.ResponseParser
-import com.example.data.operations.categories.CharactersRemoteDataSource
-import com.example.data.operations.categories.CharactersRepositoryImpl
-import com.example.data.operations.categories.CharactersService
+import com.example.data.operations.characters.CharactersRemoteDataSource
+import com.example.data.operations.characters.CharactersRepositoryImpl
+import com.example.data.operations.characters.CharactersService
 import com.example.domain.operations.characters.CharactersRepository
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.JavaNetCookieJar

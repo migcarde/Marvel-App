@@ -4,4 +4,6 @@ import com.example.commons.data.types.Either
 
 interface CharactersRepository {
     suspend fun getCharacters(charactersDataInput: CharactersDataInput): Either<CharactersFailure, CharacterListBusiness>
+
+    suspend fun getCharacter(characterDataInput: CharacterDataInput): Either<CharactersFailure, CharacterListBusiness>
 }

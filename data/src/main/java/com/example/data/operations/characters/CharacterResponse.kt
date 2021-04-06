@@ -1,4 +1,4 @@
-package com.example.data.operations.categories
+package com.example.data.operations.characters
 
 import com.example.domain.operations.characters.*
 

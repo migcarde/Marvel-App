@@ -2,6 +2,7 @@ package com.example.marvelcharacters.operations.characters
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -70,7 +71,9 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
             setHasFixedSize(true)
             val layout = LinearLayoutManager(requireContext())
             layoutManager = layout
-            charactersAdapter = CharactersAdapter(characters.toMutableList())
+            charactersAdapter = CharactersAdapter(
+                characters.toMutableList(),
+                onClick = { viewModel.goToDetail(it) })
             adapter = charactersAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -86,6 +89,12 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
 
     override fun manageTransition(transition: CharactersViewTransition) {
         when (transition) {
+            // Success
+            is CharactersViewTransition.GoToDetail -> findNavController().navigate(
+                CharactersFragmentDirections.actionCharactersFragmentToCharacterFragment(transition.id)
+            )
+
+            // Failure
             is CharactersViewTransition.OnUnknown -> binding.tvMessage.apply {
                 text = getString(R.string.unknown_error)
                 visibility = View.VISIBLE

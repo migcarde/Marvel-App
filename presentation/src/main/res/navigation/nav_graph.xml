@@ -9,6 +9,22 @@
         android:id="@+id/charactersFragment"
         android:name="com.example.marvelcharacters.operations.characters.CharactersFragment"
         android:label="CharactersFragment"
-        tools:layout="@layout/characters_fragment" />
+        tools:layout="@layout/characters_fragment" >
+
+        <action
+            android:id="@+id/action_characters_fragment_to_character_fragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.example.marvelcharacters.operations.character.CharacterFragment"
+        android:label="CharacterFragment"
+        tools:layout="@layout/character_fragment" >
+
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 
 </navigation>
