@@ -74,7 +74,15 @@ class CharactersViewModel(private val getCharacters: GetCharacters) :
     }
 
     private fun handleUpdate(charactersForUpdate: CharacterListBusiness) {
-        stateUpdate.data = charactersForUpdate.toPresentation()
-        viewState.value = stateUpdate
+        state.data?.let {
+            val newCharactersList = charactersForUpdate.toPresentation()
+            val newResults = it.results.toMutableList().apply {
+                removeLast()
+                addAll(newCharactersList.results) }
+            newCharactersList.results = newResults
+
+            state.data = newCharactersList
+            viewState.value = state
+        }
     }
 }
