@@ -9,7 +9,7 @@ import com.example.marvelcharacters.databinding.LoadingItemBinding
 import com.example.marvelcharacters.operations.characters.CharactersAdapterViewEntity.Companion.TYPE_CONTENT
 
 class CharactersAdapter(
-    val characters: MutableList<CharactersAdapterViewEntity>,
+    var characters: MutableList<CharactersAdapterViewEntity>,
     val onClick: (Long) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -38,8 +38,13 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
 
                 state.data?.results?.let {
                     if (it.isNotEmpty()) {
-                        binding.rvBooks.visibility = View.VISIBLE
-                        setRecyclerView(it)
+                        if (binding.rvBooks.visibility == View.VISIBLE) {
+                            updateRecyclerView(it)
+                        } else {
+                            binding.rvBooks.visibility = View.VISIBLE
+                            setRecyclerView(it)
+                        }
+
                     }
                 }
             }
@@ -55,11 +60,7 @@ class CharactersFragment : BaseFragment<CharactersViewState, CharactersViewTrans
 
     private fun updateRecyclerView(characters: List<CharactersAdapterViewEntity>) {
         val initialSize = charactersAdapter.characters.size
-
-        charactersAdapter.characters.apply {
-            removeLast()
-            addAll(characters)
-        }
+        charactersAdapter.characters = characters.toMutableList()
 
         binding.rvBooks.adapter?.notifyItemRangeInserted(
             initialSize,

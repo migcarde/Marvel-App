@@ -9,7 +9,7 @@ data class CharacterListViewEntity(
     val total: Long,
     val count: Long,
     val offset: Long,
-    val results: List<CharactersAdapterViewEntity>
+    var results: List<CharactersAdapterViewEntity>
 )
 
 data class CharacterViewEntity(
